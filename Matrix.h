@@ -27,6 +27,8 @@ public:
     Matrix<T> remove_row_col(int r, int c);
     Matrix<T> adj();
     Matrix<float> inv();
+    vector<Matrix<T> > splitRows();
+    vector<Matrix<T> > splitCols();
 
     Matrix<T> operator+(Matrix<T> B);
     Matrix<T> operator-(Matrix<T> B);
@@ -286,6 +288,44 @@ Matrix<float> Matrix<T>::inv()
     // Prevent dividing by 0
     if (determinant == 0.0) throw std::runtime_error("Not Invertible");
     return (1/determinant)*(this_float.adj());
+}
+
+template <class T>
+vector<Matrix<T> > Matrix<T>::splitRows()
+{
+    // Returns n row vectors where n is the number of rows
+    vector<Matrix<T> > rows;
+    for (int i = 0; i < this->rows; ++i)
+    {
+        // Create individual 1xm row
+        vector<vector<T> > row(1,vector<T>(this->cols));
+        for (int j = 0; j < this->cols; ++j)
+        {
+            row.at(0).at(j) = this->at_z(i,j);
+        } 
+        // Add 1xm matrix where m is the number of columns
+        rows.push_back(Matrix(1, this->cols, row));
+    }
+    return rows;
+}
+
+template <class T>
+vector<Matrix<T> > Matrix<T>::splitCols()
+{
+    // Returns m column vectors where m is the number of columns
+    vector<Matrix<T> > cols;
+    for (int j = 0; j < this->cols; ++j)
+    {
+        // Create individual nx1 column
+        vector<vector<T> > col(this->rows, vector<T>(1));
+        for (int i = 0; i < this->rows; ++i)
+        {
+            col.at(i).at(0) = this->at_z(i, j);
+        }
+        // Add nx1 matrix where n is the number of rows
+        cols.push_back(Matrix(this->rows, 1, col));
+    }
+    return cols;
 }
 
 #endif

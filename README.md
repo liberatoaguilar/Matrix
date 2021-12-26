@@ -13,6 +13,7 @@
 * `inv()` returns the inverse of a matrix
 * `at()` returns element at (i,j) starting at 1 (not 0)
 * `getRows()` and `getCols()` return dimension of a matrix
+* `splitRows()` and `splitCols()` return vectors of rows or columns split up
 * Matrix addition uses `operator+`
 * Matrix subtraction uses `operator-`
 * Matrix multiplication uses `operator*`
@@ -22,7 +23,6 @@
 ### Planned
 * Gauss-Jordan Elimination
 * Row Operations
-* Split/Combine Rows/Columns?
 * LU Factorization?
 * Outer/Inner Product?
 * Eigenvalues/Eigenvectors?
@@ -42,12 +42,31 @@
  [-1.4 0.8 0.4]
  [0.8 -0.6 0.2]]
 
-[[5 0 0]
- [0 5 0]
- [0 0 5]]
+[[1 2 3]
+ [4 5 6]
+ [7 8 9]
+ [1 1 1]]
 
-[[1 0 0]
- [1.19209e-07 1 -2.98023e-08]
- [2.38419e-07 0 1]]
- ```
+[[1]
+ [4]
+ [7]
+ [1]]
 
+[[2]
+ [5]
+ [8]
+ [1]]
+
+[[3]
+ [6]
+ [9]
+ [1]]
+
+[[1 2 3]]
+
+[[4 5 6]]
+
+[[7 8 9]]
+
+[[1 1 1]]
+```
