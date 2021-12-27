@@ -39,6 +39,8 @@ public:
     Matrix<T> operator+(Matrix<T> B);
     Matrix<T> operator-(Matrix<T> B);
     Matrix<T> operator*(Matrix<T> B);
+    
+    Matrix<T> rref();
 
 };
 
@@ -390,6 +392,30 @@ void Matrix<T>::mult_add_row(int row1, int row2, T alpha)
     {
         this->entries.at(row1-1).at(j) = this->at_z(row1-1, j)+alpha*this->at_z(row2-1, j);
     }
+}
+
+template <class T>
+Matrix<T> Matrix<T>::rref()
+{
+    // Copy of this
+    Matrix<T> r(this->rows, this->cols, this->entries);
+    // The minimum dimension of the matrix
+    int min_dim = (r.rows > r.cols) ? r.cols : r.rows;
+    // Outer loop chooses pivots
+    for (int i = 1; i <= min_dim; ++i)
+    {
+        // Make pivot 1
+        r.mult_row(i, 1/(r.at(i, i)));
+        // Loop through other rows 
+        for (int j = 1; j <= r.rows; ++j)
+        {
+            // Skip pivot
+            if (i == j) continue;
+            // Make 0
+            r.mult_add_row(j, i, -r.at(j, i));
+        }
+    }
+    return r;
 }
 
 #endif

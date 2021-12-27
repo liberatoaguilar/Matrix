@@ -32,6 +32,7 @@ int main()
     {
         cout << e << endl;
     }
+    cout << C.rref() << endl;
     return 0;
 }
 

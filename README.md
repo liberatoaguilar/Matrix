@@ -25,9 +25,9 @@
     * `sub_row()` subtracts a row from another row
     * `swap_row()` swaps two rows
     * `mult_add_row()` adds a row to another row multiplies by a scalar
+* `rref()` Gauss-Jordan Elimination
 
 ### Planned
-* Gauss-Jordan Elimination
 * LU Factorization?
 * Outer/Inner Product?
 * Eigenvalues/Eigenvectors?
@@ -74,4 +74,9 @@
 [[7 8 9]]
 
 [[1 1 1]]
+
+[[1 0 0]
+ [0 1 0]
+ [0 0 1]]
+
 ```
