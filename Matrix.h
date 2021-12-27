@@ -20,7 +20,7 @@ public:
     Matrix(int r, int c);
     Matrix(int r, int c, vector<vector<T> > e);
     T at(int i, int j);
-    Matrix tpose();
+    Matrix<T> tpose();
     int getRows() const { return this->rows; }
     int getCols() const { return this->cols; }
     T det();
@@ -29,6 +29,11 @@ public:
     Matrix<float> inv();
     vector<Matrix<T> > splitRows();
     vector<Matrix<T> > splitCols();
+
+    void mult_row(int row, T alpha);
+    void add_row(int row1, int row2);
+    void sub_row(int row1, int row2);
+    void swap_row(int row1, int row2);
 
     Matrix<T> operator+(Matrix<T> B);
     Matrix<T> operator-(Matrix<T> B);
@@ -326,6 +331,52 @@ vector<Matrix<T> > Matrix<T>::splitCols()
         cols.push_back(Matrix(this->rows, 1, col));
     }
     return cols;
+}
+
+template <class T>
+void Matrix<T>::mult_row(int row, T alpha)
+{
+    // Multiply a row by a scalar α
+    // Row is 1 based indexing
+    for (int j = 0; j < this->cols; ++j)
+    {
+        this->entries.at(row-1).at(j) = alpha*this->at_z(row-1, j);
+    }
+}
+
+template <class T>
+void Matrix<T>::add_row(int row1, int row2)
+{
+    // Second parameter is added to first parameter
+    // R1 = R1+R2 where R1 and R2 are any two rows (one based indexing)
+    for (int j = 0; j < this->cols; ++j)
+    {
+        this->entries.at(row1-1).at(j) = this->at_z(row1-1, j)+this->at_z(row2-1, j);
+    }
+}
+
+template <class T>
+void Matrix<T>::sub_row(int row1, int row2)
+{
+    // Second parameter is subtracted from first parameter
+    // R1 = R1-R2 where R1 and R2 are any two rows (one based indexing)
+    for (int j = 0; j < this->cols; ++j)
+    {
+        this->entries.at(row1-1).at(j) = this->at_z(row1-1, j)-this->at_z(row2-1, j);
+    }
+}
+
+template <class T>
+void Matrix<T>::swap_row(int row1, int row2)
+{
+    // Swaps R1 and R2 where R1 and R2 are any two rows (one based indexing)
+    T temp;
+    for (int j = 0; j < this->cols; ++j)
+    {
+        temp = this->at_z(row1-1, j);
+        this->entries.at(row1-1).at(j) = this->at_z(row2-1, j);
+        this->entries.at(row2-1).at(j) = temp;
+    }
 }
 
 #endif

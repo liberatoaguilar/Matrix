@@ -19,6 +19,11 @@
 * Matrix multiplication uses `operator*`
 * Scalar multiplication also uses `operator*` but the form must be `α*M`
 * A Matrix can be output to a stream with `operator<<`
+* Row operations
+    * `mult_row()` multiplies a row by a scalar
+    * `add_row()` adds a row to another row
+    * `sub_row()` subtracts a row from another row
+    * `swap_row()` swaps two rows
 
 ### Planned
 * Gauss-Jordan Elimination
