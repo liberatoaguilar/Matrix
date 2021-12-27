@@ -24,10 +24,10 @@
     * `add_row()` adds a row to another row
     * `sub_row()` subtracts a row from another row
     * `swap_row()` swaps two rows
+    * `mult_add_row()` adds a row to another row multiplies by a scalar
 
 ### Planned
 * Gauss-Jordan Elimination
-* Row Operations
 * LU Factorization?
 * Outer/Inner Product?
 * Eigenvalues/Eigenvectors?

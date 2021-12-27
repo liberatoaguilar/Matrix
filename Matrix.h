@@ -34,6 +34,7 @@ public:
     void add_row(int row1, int row2);
     void sub_row(int row1, int row2);
     void swap_row(int row1, int row2);
+    void mult_add_row(int row1, int row2, T alpha);
 
     Matrix<T> operator+(Matrix<T> B);
     Matrix<T> operator-(Matrix<T> B);
@@ -376,6 +377,18 @@ void Matrix<T>::swap_row(int row1, int row2)
         temp = this->at_z(row1-1, j);
         this->entries.at(row1-1).at(j) = this->at_z(row2-1, j);
         this->entries.at(row2-1).at(j) = temp;
+    }
+}
+
+template <class T>
+void Matrix<T>::mult_add_row(int row1, int row2, T alpha)
+{
+    // Second parameter scaled by alpha is added to first parameter
+    // R1 = R1 + αR2 where R1 and R2 are any two rows (one based indexing) 
+    // and α is a scalar
+    for (int j = 0; j < this->cols; ++j)
+    {
+        this->entries.at(row1-1).at(j) = this->at_z(row1-1, j)+alpha*this->at_z(row2-1, j);
     }
 }
 
