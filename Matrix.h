@@ -335,7 +335,6 @@ vector<Matrix<T> > Matrix<T>::splitCols()
     }
     return cols;
 }
-
 template <class T>
 void Matrix<T>::mult_row(int row, T alpha)
 {
@@ -343,6 +342,8 @@ void Matrix<T>::mult_row(int row, T alpha)
     // Row is 1 based indexing
     for (int j = 0; j < this->cols; ++j)
     {
+        // Added to avoid -0 when scalar is negative and entry is 0
+        if (this->entries.at(row-1).at(j) == 0) continue;
         this->entries.at(row-1).at(j) = alpha*this->at_z(row-1, j);
     }
 }
@@ -401,18 +402,67 @@ Matrix<T> Matrix<T>::rref()
     Matrix<T> r(this->rows, this->cols, this->entries);
     // The minimum dimension of the matrix
     int min_dim = (r.rows > r.cols) ? r.cols : r.rows;
+    int shift{};
     // Outer loop chooses pivots
     for (int i = 1; i <= min_dim; ++i)
     {
-        // Make pivot 1
-        r.mult_row(i, 1/(r.at(i, i)));
+        // Shift variable used to create "step" of row echelon form
+        shift = 0;
+        // If pivot is zero shift pivot one column right until nonzero
+        while (r.at(i, i+shift) == 0 && i+shift < r.cols)
+        {
+            ++shift;
+        }
+
+        // Make pivot positive
+        if (r.at(i, i+shift) < 0) r.mult_row(i, -1);
+        // Make pivot 1 
+        r.mult_row(i, 1/(r.at(i ,i+shift)));
+
         // Loop through other rows 
         for (int j = 1; j <= r.rows; ++j)
         {
             // Skip pivot
             if (i == j) continue;
             // Make 0
-            r.mult_add_row(j, i, -r.at(j, i));
+            r.mult_add_row(j, i, -r.at(j, i+shift));
+        }
+    }
+    return r;
+}
+
+template <class T>
+Matrix<T> Matrix<T>::ref()
+{
+    // Copy of this
+    Matrix<T> r(this->rows, this->cols, this->entries);
+    // The minimum dimension of the matrix
+    int min_dim = (r.rows > r.cols) ? r.cols : r.rows;
+    int shift{};
+    // Outer loop chooses pivots
+    for (int i = 1; i <= min_dim; ++i)
+    {
+        // Shift variable used to create "step" of row echelon form
+        shift = 0;
+        // If pivot is zero shift pivot one column right until nonzero
+        while (r.at(i, i+shift) == 0 && i+shift < r.cols)
+        {
+            ++shift;
+        }
+
+        // Make pivot positive
+        if (r.at(i, i+shift) < 0) r.mult_row(i, -1);
+        // Make pivot 1 
+        r.mult_row(i, 1/(r.at(i ,i+shift)));
+
+        // Loop through other rows 
+        // Only line different than rref(), j=i instead of j=1
+        for (int j = i; j <= r.rows; ++j)
+        {
+            // Skip pivot
+            if (i == j) continue;
+            // Make 0
+            r.mult_add_row(j, i, -r.at(j, i+shift));
         }
     }
     return r;
