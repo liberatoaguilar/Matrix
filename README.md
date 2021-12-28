@@ -25,10 +25,10 @@
     * `sub_row()` subtracts a row from another row
     * `swap_row()` swaps two rows
     * `mult_add_row()` adds a row to another row multiplies by a scalar
-* `rref()` Gauss-Jordan Elimination
+* `rref()` reduced row echelon form
+* `ref()` row echelon form
 
 ### Planned
-* LU Factorization?
 * Outer/Inner Product?
 * Eigenvalues/Eigenvectors?
 
