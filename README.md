@@ -27,6 +27,8 @@
     * `mult_add_row()` adds a row to another row multiplies by a scalar
 * `rref()` reduced row echelon form
 * `ref()` row echelon form
+* `addCol()` add a column to a matrix
+* `addRow()` add a row to a matrix
 
 ### Planned
 * Outer/Inner Product?

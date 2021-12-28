@@ -29,6 +29,8 @@ public:
     Matrix<float> inv();
     vector<Matrix<T> > splitRows();
     vector<Matrix<T> > splitCols();
+    Matrix<T> addRow(Matrix<T> row);
+    Matrix<T> addCol(Matrix<T> col);
 
     void mult_row(int row, T alpha);
     void add_row(int row1, int row2);
@@ -466,6 +468,60 @@ Matrix<T> Matrix<T>::ref()
         }
     }
     return r;
+}
+
+template <class T>
+Matrix<T> Matrix<T>::addRow(Matrix<T> row)
+{
+    // Size compatability check
+    if (row.getCols() != this->cols && row.getRows() == 1) 
+        throw std::runtime_error("Incompatible Size");
+
+    // Same size as this with extra row
+    vector<vector<T> > new_entries(this->rows+1,vector<T>(this->cols));
+    // Copy elements
+    for (int i = 0; i < this->rows; ++i)
+    {
+        for (int j = 0; j < this->cols; ++j)
+        {
+            new_entries.at(i).at(j) = this->at_z(i, j);
+        }
+    }
+    // Loop throgh cols
+    for (int j = 0; j < this->cols; ++j)
+    {
+        // Add row to bottom
+        new_entries.at(this->rows).at(j) = row.at_z(0,j);
+    }
+    // Return new matrix
+    return Matrix(this->rows+1, this->cols, new_entries);
+}
+
+template <class T>
+Matrix<T> Matrix<T>::addCol(Matrix<T> col)
+{
+    // Size compatability check
+    if (col.getRows() != this->rows && col.getCols() == 1) 
+        throw std::runtime_error("Incompatible Size");
+
+    // Same size as this with extra colum
+    vector<vector<T> > new_entries(this->rows, vector<T>(this->cols+1)); 
+    // Copy elements
+    for (int i = 0; i < this->rows; ++i)
+    {
+        for (int j = 0; j < this->cols; ++j)
+        {
+            new_entries.at(i).at(j) = this->at_z(i, j);
+        }
+    }
+    // Loop through rows
+    for (int i = 0; i < this->rows; ++i)
+    {
+        // Add new column to the left
+        new_entries.at(i).at(this->cols) = col.at_z(i, 0);
+    }
+    // Return new matrix
+    return Matrix(this->rows, this->cols+1, new_entries);
 }
 
 #endif
