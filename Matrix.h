@@ -41,7 +41,7 @@ public:
     Matrix<T> operator*(Matrix<T> B);
     
     Matrix<T> rref();
-
+    Matrix<T> ref();
 };
 
 // Output:
